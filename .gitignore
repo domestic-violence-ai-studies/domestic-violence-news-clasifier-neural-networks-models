@@ -5,6 +5,10 @@
 *.so
 *.dylib
 
+no_rep_news-domestic-no-violence.json
+no_rep_news-domestic-violence.json
+clean_data.json
+
 # Test binary, built with `go test -c`
 *.test
 
