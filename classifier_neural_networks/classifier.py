@@ -30,7 +30,7 @@ class DomesticViolenceNewsClassifier:
             self.tokenizer = pickle.load(handle)
         self.multilabel_binarizer = MultiLabelBinarizer()
         self.model = None
-        self.maxlen = 100
+        self.maxlen = 500
 
     def create_train_and_test_data(self, sentences, y):
         print("separating data into test data and train data")
