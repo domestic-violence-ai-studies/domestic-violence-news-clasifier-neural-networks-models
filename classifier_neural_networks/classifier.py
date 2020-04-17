@@ -1,23 +1,17 @@
 #tar -cJf filename.tar.xz /path/to/folder_or_file ...
 #https://blog.mimacom.com/text-classification/
 #https://machinelearningmastery.com/regression-tutorial-keras-deep-learning-library-python/
-from keras.datasets import imdb
-import nltk
-from nltk.corpus import stopwords
+
 from sklearn.preprocessing import MultiLabelBinarizer
 from keras.preprocessing.text import Tokenizer
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Embedding, GRU, Flatten, GlobalMaxPool1D, Dropout, Conv1D
+from keras.layers import Dense, Activation, Embedding, MaxPooling1D, Flatten, GlobalMaxPool1D, Dropout, Conv1D
 from keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 
-from keras.optimizers import Adam
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.sequence import pad_sequences
 
-nltk.download('stopwords')
 import pandas as pd
-import glob
-import re
 import numpy as np
 import pickle
 
@@ -30,7 +24,7 @@ class DomesticViolenceNewsClassifier:
             self.tokenizer = pickle.load(handle)
         self.multilabel_binarizer = MultiLabelBinarizer()
         self.model = None
-        self.maxlen = 500
+        self.maxlen = 900
 
     def create_train_and_test_data(self, sentences, y):
         print("separating data into test data and train data")
@@ -54,18 +48,22 @@ class DomesticViolenceNewsClassifier:
         #model.add(GlobalMaxPool1D())
         #model.add(Dense(output_size, activation='sigmoid'))
 
-        #self.model = Sequential()
-        #self.model.add(Embedding(vocab_size, 20, input_length=self.maxlen))
-        #self.model.add(Dropout(0.1))
-        #self.model.add(Conv1D(filter_length, 3, padding='valid', activation='relu', strides=1))
-        #self.model.add(GlobalMaxPool1D())
-        #self.model.add(Dense(1, activation='sigmoid'))
-
         self.model = Sequential()
         self.model.add(Embedding(vocab_size, 20, input_length=self.maxlen))
-        self.model.add(GRU(128, return_sequences=True))
-        self.model.add(GRU(128))
+        self.model.add(Dropout(0.1))
+        self.model.add(Conv1D(filter_length, 5, activation='relu'))
+        self.model.add(Conv1D(filter_length, 5, activation='relu'))
+        self.model.add(MaxPooling1D(5))
+        self.model.add(Conv1D(filter_length, 5, activation='relu'))
+        self.model.add(Conv1D(filter_length, 5, activation='relu'))
+        self.model.add(GlobalMaxPool1D())
         self.model.add(Dense(1, activation='sigmoid'))
+
+        #self.model = Sequential()
+        #self.model.add(Embedding(vocab_size, 20, input_length=self.maxlen))
+        #self.model.add(GRU(128, return_sequences=True))
+        #self.model.add(GRU(128))
+        #self.model.add(Dense(1, activation='sigmoid'))
         
         self.model.compile(optimizer='adam',
               loss='binary_crossentropy',

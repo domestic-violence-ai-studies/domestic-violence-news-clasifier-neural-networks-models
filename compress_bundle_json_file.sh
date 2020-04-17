@@ -5,5 +5,5 @@ zip no_rep_news-domestic-violence.zip no_rep_news-domestic-violence.json
 
 cd ..
 cd neural_network_config
-zip model_and_tokenizer.zip model.h5 model.json temp-model.h5 tokenizer.pickle 
+zip model_and_tokenizer_20200417.zip model.h5 model.json temp-model.h5 tokenizer.pickle 
 
