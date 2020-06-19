@@ -9,6 +9,8 @@ verify_ssl = true
 keras = "*"
 pandas = "*"
 jupyter = "*"
+sklearn = "*"
+keras-metrics = "*"
 
 [requires]
 python_version = "3.7"
